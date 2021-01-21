@@ -5,7 +5,7 @@ library(shiny)
 
 ui <- fluidPage(
   sliderInput("x", label = "If x is", min = 1, max = 50, value = 30),
-  "then x times 5 is",
+  "then 5 times x is",
   textOutput("product")
 )
 
@@ -18,7 +18,7 @@ server <- function(input, output, session) {
 # Can you find and correct the error?
 ui <- fluidPage(
   sliderInput(inputId = "x", label = "If x is", min = 1, max = 50, value = 30),
-  "then x times 5 is",
+  "then 5 times x is",
   textOutput("product")
 )
 
