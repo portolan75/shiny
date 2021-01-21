@@ -1,6 +1,7 @@
 #' **Inputs**
 #' We’ll dive deeper into the front end and explore the HTML inputs, outputs, 
 #' and layouts provided by Shiny.
+
 library(shiny)
 #' **Common structure**
 #' *inputId* identifier used to connect the front end (ui) with back end (server)
@@ -11,7 +12,9 @@ library(shiny)
 #' *value* set the default value (when possible)
 #' Example: sliderInput("min", "Limit (minimum)", value = 50, min = 0, max = 100)
 #' 
+#' 
 #' **Built-in Inputs in Shiny**
+#' 
 #' **Free text**
 #' 
 #' *textInput* collect small amount of text
