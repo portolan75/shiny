@@ -1,6 +1,7 @@
 library(shiny)
 
 ui <- fluidPage(
+  theme = bslib::bs_theme(version = 4, bootswatch = "cerulean"),
   checkboxGroupInput(
     inputId = "std_tags",
     label = "Which activities/tag(s) would you like to track time of?",
