@@ -1,39 +1,49 @@
 library(shiny)
-
+profvis::profvis({
 ui <- navbarPage(
-  title = "TYT- Take Your Time",
-  theme = bslib::bs_theme(version = 4, bootswatch = "dark"),
+  title = "TYT - Take Your Time",
+  theme = bslib::bs_theme(version = 4, bootswatch = "mint"),
   
   # Input: Tab with input data (input tags, input time) ----
-  tabPanel("Create/Edit Tags", fluid = TRUE,
-    # Fluidrow layout for the first input tabset----
+  tabPanel("Tags", #fluid = TRUE,
+    # Fluidrow layout for the first input question 1st tabset----
     fluidRow(
-      # Sidebar panel for inputs ----
-      column(6,
+      column(width = 12,
         checkboxGroupInput(
           inputId = "std_tags",
           label = "Which activities/tag(s) would you like to track time of?",
           choices = list(
             "Eating and Cooking", "Work", "Social-Network", "Social-Out", 
             "Sport", "Entertainment", "Sleeping"
-          )
+          ),
+          width = "100%"
         )
-      ),
-      br(),
-      column(6, 
+      )
+    ),
+    # Fluidrow layout for the second input question 1st tabset----
+    fluidRow(
+      column(width = 12,
         textInput(
           inputId = "oth_tags",
-          label = "Do you have specific activities/tag(s) you like to track time of?
-          (Please list them below, each time you hit ENTER a new tag is created)",
-          placeholder = "Volunteering, Holidays, Administration, etc."
+          label = HTML(
+            "Do you have specific activities/tag(s) you like to track time of?",
+            "<br/>(Please list them below, each time you hit ENTER a new tag is created)"
+          ),
+          placeholder = "Volunteering, Holidays, Administration, etc.",
+          width = "100%"
         )
-      ),
-      # Main panel for displaying outputs ----
-      mainPanel(tabPanel("Create/Edit Tags", textOutput("tags_selected")))
+      )
+    ),
+    # Main panel (output) for displaying selected inputs ----
+    fluidRow(
+      column(width = 12,
+        h5("Currently selected tags:"), 
+        textOutput("tags_selected"),
+      )
     )
   ),
   # Output: Tabset w/ plot, summary, and table ----
-  tabPanel("Insert Time", tableOutput("time_table"))
+  tabPanel("Time", tableOutput("time_table"))
 )
 
 
@@ -43,11 +53,9 @@ server <- function(input, output, session) {
   })
   
   output$tags_selected <- renderText({
-    paste(
-      "These are your current tags",
-      all_tags()
-    )
+      HTML(paste(all_tags(), collapse = '\n'))
   })
 }
 
 shinyApp(ui, server)
+})
