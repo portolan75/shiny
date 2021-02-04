@@ -38,7 +38,7 @@ ui <- navbarPage(
     fluidRow(
       column(width = 12,
         h5("Currently selected tags:"), 
-        textOutput("tags_selected"),
+        htmlOutput("tags_selected"),
       )
     )
   ),
@@ -52,8 +52,8 @@ server <- function(input, output, session) {
     c(input$std_tags, input$oth_tags)
   })
   
-  output$tags_selected <- renderText({
-      HTML(paste(all_tags(), collapse = '\n'))
+  output$tags_selected <- renderUI({
+      HTML(paste(all_tags(), sep = "", collapse = "<br/>"))
   })
 }
 
