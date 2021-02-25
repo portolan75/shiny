@@ -19,6 +19,7 @@ server <- function(input, output, session) {
   output$text <- renderText("Hello friend!")
   output$code <- renderPrint(summary(1:10))
 }
+shinyApp(ui, server)
 #'
 #' Two render functions that can be used with either of the text outputs:
 #' 
@@ -48,6 +49,7 @@ server <- function(input, output, session) {
   output$static <- renderTable(head(mtcars))
   output$dynamic <- renderDataTable(mtcars, options = list(pageLength = 5))
 }
+shinyApp(ui, server)
 #'
 #' DT package usage example:
 ui <- fluidPage(
@@ -65,6 +67,7 @@ server <- function(input, output, session) {
     )
   )
 }
+shinyApp(ui, server)
 #'
 #'
 #' ** Plot Output **
@@ -77,10 +80,11 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   output$plot <- renderPlot(plot(1:5, cex = 2), res = 96)
 }
+shinyApp(ui, server)
 #' NOTE: By default, plotOutput() will take up the full width of its container 
 #' and will be 400 pixels high. Height and width arguments allow for editing.\ 
 #' We recommend always setting res = 96 as that will make Shiny plots match what 
-#' is prouced in RStudio as closely as possible.
+#' is produced in RStudio as closely as possible.
 #' 
 #' 
 #' ** Downloads **
@@ -91,4 +95,3 @@ server <- function(input, output, session) {
 #'  - with a link *downloadLink()*
 #' 
 #' These requires new server techniques (please see chapter 9 Uploads and DL's)
-shinyApp(ui, server)
