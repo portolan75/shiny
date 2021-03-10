@@ -9,7 +9,9 @@ function(input, output, session) {
     validate(
       need(
         input$ti_user_basic != "" && input$ti_password_basic != "" &&
-        (which(user_tbl$user == input$ti_user_basic) == which(user_tbl$password == input$ti_password_basic)),
+        which(user_tbl$user == input$ti_user_basic) == 
+            which(user_tbl$password == input$ti_password_basic)
+        ,
         "Wrong User Name or Password"
       )
     )

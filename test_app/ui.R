@@ -1,22 +1,10 @@
 # app backbone UI
 navbarPage(
-  tags$div(
-    tags$style(HTML("
-              .shiny-output-error-validation {
-                color: #ffce67;
-                width: 100%;
-                padding-right: 15px;
-                padding-left: 15px;
-                margin-right: auto;
-                margin-left: auto;
-                max-width: 540px;
-              }
-    "))
-  ),
   title = "TYT - Take Your Time",
   theme = bslib::bs_theme(version = 4, bootswatch = "mint"),
   useShinyjs(),  # Include shinyjs
   
+  # UI container
   div(
     class = "container",
     column(
@@ -31,6 +19,21 @@ navbarPage(
           class = "well",
           h4(class = "text-center", "Please login"),
           p(class = "text-center", tags$small("First approach login form")),
+          
+          # Tag to contain login error message when triggered
+          tags$div(
+            tags$style(HTML("
+              .shiny-output-error-validation {
+                color: #ffce67;
+                width: 100%;
+                padding-right: 15px;
+                padding-left: 15px;
+                margin-right: auto;
+                margin-left: auto;
+                max-width: 540px;
+              }
+            "))
+          ),
           
           textInput(
             inputId     = "ti_user_basic",
