@@ -39,6 +39,22 @@ function(input, output, session) {
   })
   #### END
   
+  # Geolocation
+  user_geo <- reactive({
+    geo <- GeolocateUser()
+    HTML(paste0(
+      "<b>",
+      "ip: ", geo$ip, "<br>",
+      "country_name: ", geo$country_name, "<br>",
+      "country_code: ", geo$country_code, "<br>",
+      "time_zone: ", geo$time_zone, "<br>",
+      "latitude: ", geo$latitude, "<br>",
+      "longitude: ", geo$longitude, "<br>",
+      "</b>"
+    ))
+  })
+  
+  # Output display
   output$display_content_basic <- renderUI({
     req(validate_password_basic())
     
@@ -47,7 +63,11 @@ function(input, output, session) {
       class = "alert alert-dismissible alert-success",
       h4("Access confirmed!"),
       p("Welcome to TYT"),
-      user_session()
+      h5("User session data"),
+      user_session(),
+      br(),
+      h5("User geo data"),
+      user_geo()
     )
   })
   
