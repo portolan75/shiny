@@ -4,16 +4,23 @@ library(shinyjs)        # improve user experience with JavaScript
 #library(tidyverse)     # data manipulation
 library(DBI)            # database driver and communications
 
-#' Db path and connection - ----
+# Db path and connection - ----
 db_path <- file.path("/Users/DjBlue/Documents/R", "SQLite_databases", "TYT.db")
 conn <- dbConnect(RSQLite::SQLite(), db_path)
 
-#' Function to extract the current userbase from db - ----
+# Function to connect to url and extract geolocation info
+GeolocateUser <- function() {
+  url <- "https://freegeoip.app/json"
+  geo <- jsonlite::fromJSON(readLines(url, warn = FALSE))
+  geo
+}
+
+# Function to extract the current userbase from db - ----
 GetCurrentUsers <- function() {
   user_tbl <- dbGetQuery(conn, "SELECT user, password FROM user")
   dbDisconnect(conn)
   user_tbl
 }
 
-#' 1. Get existing userbase from db - ----
+# 1. Get existing userbase from db - ----
 user_tbl <- GetCurrentUsers()
