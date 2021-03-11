@@ -4,9 +4,8 @@ library(shinyjs)        # improve user experience with JavaScript
 #library(tidyverse)     # data manipulation
 library(DBI)            # database driver and communications
 
-# Db path and connection - ----
+# Db path - ----
 db_path <- file.path("/Users/DjBlue/Documents/R", "SQLite_databases", "TYT.db")
-conn <- dbConnect(RSQLite::SQLite(), db_path)
 
 # Function to connect to url and extract geolocation info
 GeolocateUser <- function() {
@@ -15,12 +14,26 @@ GeolocateUser <- function() {
   geo
 }
 
-# Function to extract the current userbase from db - ----
+# Function to extract the current userbase from db
 GetCurrentUsers <- function() {
-  user_tbl <- dbGetQuery(conn, "SELECT user, password FROM user")
+  conn <- dbConnect(RSQLite::SQLite(), db_path)
+  user_tbl <- dbGetQuery(conn, "SELECT id, user, password FROM user")
   dbDisconnect(conn)
   user_tbl
 }
-
-# 1. Get existing userbase from db - ----
+# Get existing userbase from db
 user_tbl <- GetCurrentUsers()
+
+# Function to upload logs in log table
+UpdateLog <- function(user) {
+  conn <- dbConnect(RSQLite::SQLite(), db_path)
+  query_insert <- sprintf(
+    "INSERT INTO log (logtime, logtext, user_id) VALUES ('%s', '%s', %d)",
+    Sys.time(),
+    jsonlite::toJSON(GeolocateUser()),
+    user_tbl[user_tbl$user == user, "id"]
+  )
+  # Update the database
+  dbExecute(conn, query_insert)
+  dbDisconnect(conn)
+}
