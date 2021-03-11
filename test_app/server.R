@@ -1,6 +1,6 @@
 function(input, output, session) {
   
-  # 2. Check credentials vs userbase - ----
+  # 1. Check credentials vs userbase
   validate_password_basic <- eventReactive(input$ab_login_button_basic, {
     validation <- FALSE
   
@@ -19,13 +19,13 @@ function(input, output, session) {
     validation <- TRUE
   })
   
-  # 3. Hide form (in case credentials are correct) - ----
+  # 2. Hide form (in case credentials are correct) and Update log table
   observeEvent(validate_password_basic(), {
     shinyjs::hide(id = "login-basic")
+    UpdateLog(input$ti_user_basic)
   }) 
   
-  # 4. Display app content - ----
-  #### BEGIN: This part is optional if i need to save user and session data
+  # 3. Retrieve user session data
   user_session <- eventReactive(validate_password_basic(), {
     HTML(paste0(
       "<b>",
@@ -37,9 +37,8 @@ function(input, output, session) {
       "</b>"
     ))
   })
-  #### END
   
-  # Geolocation
+  # 4. Retrieve geolocation data
   user_geo <- reactive({
     geo <- GeolocateUser()
     HTML(paste0(
@@ -54,7 +53,7 @@ function(input, output, session) {
     ))
   })
   
-  # Output display
+  # 5. Display app content
   output$display_content_basic <- renderUI({
     req(validate_password_basic())
     
@@ -63,6 +62,8 @@ function(input, output, session) {
       class = "alert alert-dismissible alert-success",
       h4("Access confirmed!"),
       p("Welcome to TYT"),
+      h5(paste0("User ", input$ti_user_basic, " in action")),
+      br(),
       h5("User session data"),
       user_session(),
       br(),
