@@ -1,39 +1,22 @@
-# app backbone UI
+# UI
 navbarPage(
   title = "TYT - Take Your Time",
+  collapsible = TRUE, 
   theme = bslib::bs_theme(version = 4, bootswatch = "mint"),
   useShinyjs(),  # Include shinyjs
-  
   # UI container
-  div(
+  tags$div(
     class = "container",
     column(
       width = 12,
       
-      # Inputs
       # Login form - ----
-      div(
-        id = "login-basic", 
-        style = "width: 500px; max-width: 100%; margin: 0 auto;",
-        div(
-          class = "well",
-          h4(class = "text-center", "Please login"),
-          p(class = "text-center", tags$small("First approach login form")),
-          
-          # Tag to contain login error message when triggered
-          tags$div(
-            tags$style(HTML("
-              .shiny-output-error-validation {
-                color: #ffce67;
-                width: 100%;
-                padding-right: 15px;
-                padding-left: 15px;
-                margin-right: auto;
-                margin-left: auto;
-                max-width: 540px;
-              }
-            "))
-          ),
+      column(
+        width = 6, 
+        offset = 3,
+        wellPanel(
+          id = "login-basic",
+          tags$h5("Please login", class = "text-center"),
           
           textInput(
             inputId     = "ti_user_basic",
@@ -51,12 +34,33 @@ navbarPage(
             inputId = "ab_login_button_basic", 
             label = "Log in",
             class = "btn btn-primary"
-          )
+          ),
+          
+          # tag for hosting text output for login authentication message - ----
+          # textOutput(outputId = "login_error")
+          tags$div(
+            id = "login_error",
+            class = "shiny-text-output"
+          ),
+          tags$style(HTML("
+              .shiny-output-error-validation {
+                font-size: 0px;
+              }
+          ")),
+          tags$style(HTML("
+              .shiny-text-output {
+                color: #ffce67;
+                font-size: 15px;
+              }
+          "))
         )
       ),
+        
+      # UI Inputs - ----
+      # To be filled-in
       
-      # Outputs
-      # Display app content on authorization - ----
+      # UI Output - ----
+      # Display app content on authorization
       htmlOutput(outputId = "display_content_basic")
     )
   )

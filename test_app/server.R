@@ -1,31 +1,33 @@
 function(input, output, session) {
   
-  # 1. Check credentials vs userbase
+  # 1. Validate user and password
   validate_password_basic <- eventReactive(input$ab_login_button_basic, {
     validation <- FALSE
   
     validate(need(input$ti_user_basic != "", "User Name is missing"))
     validate(need(input$ti_password_basic != "", "Password is missing"))
-    validate(
-      need(
-        input$ti_user_basic != "" && input$ti_password_basic != "" &&
-        which(user_tbl$user == input$ti_user_basic) == 
-            which(user_tbl$password == input$ti_password_basic)
-        ,
-        "Wrong User Name or Password"
-      )
-    )
+    validate(need(
+      user_tbl[user_tbl$user == input$ti_user_basic, "id"] == 
+        user_tbl[user_tbl$password == input$ti_password_basic, "id"]
+      ,
+      "Wrong User Name or Password"
+    ))
     
     validation <- TRUE
   })
   
-  # 2. Hide form (in case credentials are correct) and Update log table
+  # 2 Login error message
+  output$login_error <- renderText({
+    validate_password_basic()
+  })
+  
+  # 3. Hide form (in case credentials are correct) and Update log table
   observeEvent(validate_password_basic(), {
     shinyjs::hide(id = "login-basic")
     UpdateLog(input$ti_user_basic)
-  }) 
+  })
   
-  # 3. Retrieve user session data
+  # 4. Retrieve user session data
   user_session <- eventReactive(validate_password_basic(), {
     HTML(paste0(
       "<b>",
@@ -38,7 +40,7 @@ function(input, output, session) {
     ))
   })
   
-  # 4. Retrieve geolocation data
+  # 5. Retrieve geolocation data
   user_geo <- reactive({
     geo <- GeolocateUser()
     HTML(paste0(
@@ -53,7 +55,7 @@ function(input, output, session) {
     ))
   })
   
-  # 5. Display app content
+  # 6. Display app content
   output$display_content_basic <- renderUI({
     req(validate_password_basic())
     
@@ -72,4 +74,5 @@ function(input, output, session) {
     )
   })
   
+  session$onSessionEnded(stopApp)
 }
