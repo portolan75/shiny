@@ -5,6 +5,7 @@ library(shinyjs)        # improve user experience with JavaScript
 library(DBI)            # database driver and communications
 
 # Db path - ----
+#options(shiny.sanitize.errors = TRUE)
 db_path <- file.path("/Users/DjBlue/Documents/R", "SQLite_databases", "TYT.db")
 
 # Function to connect to url and extract geolocation info

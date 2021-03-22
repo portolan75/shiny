@@ -37,21 +37,22 @@ navbarPage(
           ),
           
           # tag for hosting text output for login authentication message - ----
-          # textOutput(outputId = "login_error")
-          tags$div(
-            id = "login_error",
-            class = "shiny-text-output"
-          ),
+          #textOutput(outputId = "login_error"),
           tags$style(HTML("
               .shiny-output-error-validation {
                 font-size: 0px;
               }
           ")),
+          tags$div(
+            `id` = "login_error",
+            `class` = "shiny-text-output"
+          ),
           tags$style(HTML("
-              .shiny-text-output {
-                color: #ffce67;
-                font-size: 15px;
-              }
+            .shiny-text-output {
+              display: block;
+              color: #ffce67;
+              font-size: 16px;
+            }
           "))
         )
       ),

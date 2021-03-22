@@ -19,6 +19,8 @@ function(input, output, session) {
   # 2 Login error message
   output$login_error <- renderText({
     validate_password_basic()
+    #class(is_valid) <- append(class(is_valid), "character")
+    #base::stop(safeError(is_valid))
   })
   
   # 3. Hide form (in case credentials are correct) and Update log table
