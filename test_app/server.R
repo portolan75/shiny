@@ -1,32 +1,46 @@
 function(input, output, session) {
+  reactives <- reactiveValues()
   
-  # 2. Check credentials vs userbase - ----
-  validate_password_basic <- eventReactive(input$ab_login_button_basic, {
-    validation <- FALSE
+  # 1. Validate user and password
+  validate_login <- eventReactive(input$login_button, {
+    reactives$login <- FALSE
   
-    validate(need(input$ti_user_basic != "", "User Name is missing"))
-    validate(need(input$ti_password_basic != "", "Password is missing"))
+    validate(
+      need(input$user != "", "User Name is missing"), 
+      errorClass = "login"
+    )
+    validate(
+      need(input$pass != "", "Password is missing"), 
+      errorClass = "login"
+    )
     validate(
       need(
-        input$ti_user_basic != "" && input$ti_password_basic != "" &&
-        which(user_tbl$user == input$ti_user_basic) == 
-            which(user_tbl$password == input$ti_password_basic)
-        ,
+        user_tbl[user_tbl$user == input$user, "id"] == 
+          user_tbl[user_tbl$password == input$pass, "id"],
         "Wrong User Name or Password"
-      )
+      ),
+      errorClass = "login"
     )
     
-    validation <- TRUE
+    reactives$login <- TRUE
   })
   
-  # 3. Hide form (in case credentials are correct) - ----
-  observeEvent(validate_password_basic(), {
-    shinyjs::hide(id = "login-basic")
-  }) 
+  # 2 Login error message
+  output$login_error <- renderText({
+    req(validate_login(), cancelOutput = TRUE)
+    #class(is_valid) <- append(class(is_valid), "character")
+    #base::stop(safeError(is_valid))
+  })
   
-  # 4. Display app content - ----
-  #### BEGIN: This part is optional if i need to save user and session data
-  user_session <- eventReactive(validate_password_basic(), {
+  # 3. Hide form (in case credentials are correct) and Update log table
+  hide_login <- reactive({
+    req(reactives$login)
+    shinyjs::hide(id = "login-basic")
+    UpdateLog(input$user)
+  })
+  
+  # 4. Retrieve user session data
+  user_session <- eventReactive(validate_login(), {
     HTML(paste0(
       "<b>",
       "protocol: ", session$clientData$url_protocol, "<br>",
@@ -37,18 +51,40 @@ function(input, output, session) {
       "</b>"
     ))
   })
-  #### END
   
-  output$display_content_basic <- renderUI({
-    req(validate_password_basic())
+  # 5. Retrieve geolocation data
+  user_geo <- reactive({
+    geo <- GeolocateUser()
+    HTML(paste0(
+      "<b>",
+      "ip: ", geo$ip, "<br>",
+      "country_name: ", geo$country_name, "<br>",
+      "country_code: ", geo$country_code, "<br>",
+      "time_zone: ", geo$time_zone, "<br>",
+      "latitude: ", geo$latitude, "<br>",
+      "longitude: ", geo$longitude, "<br>",
+      "</b>"
+    ))
+  })
+  
+  # 6. Display app content
+  output$display_content <- renderUI({
+    hide_login()
     
     div(
-      id = "display_content_basic",
-      class = "alert alert-dismissible alert-success",
+      id = "display_content",
+      class = "card text-white bg-info mb-3",
       h4("Access confirmed!"),
       p("Welcome to TYT"),
-      user_session()
+      h5(paste0("User ", input$user, " in action")),
+      br(),
+      h5("User session data"),
+      user_session(),
+      br(),
+      h5("User geo data"),
+      user_geo()
     )
   })
   
+  session$onSessionEnded(stopApp)
 }
