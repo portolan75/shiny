@@ -1,6 +1,6 @@
 library(shiny)          # web app framework 
 library(shinyjs)        # improve user experience with JavaScript
-#library(shinyFeedback)  # improve user experience with feedbacks (warnings too)
+#library(shinyFeedback) # improve user experience with feedbacks (warnings too)
 #library(tidyverse)     # data manipulation
 library(DBI)            # database driver and communications
 
