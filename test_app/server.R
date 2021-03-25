@@ -10,13 +10,13 @@ function(input, output, session) {
       errorClass = "login"
     )
     validate(
-      need(input$passw != "", "Password is missing"), 
+      need(input$pass != "", "Password is missing"), 
       errorClass = "login"
     )
     validate(
       need(
         user_tbl[user_tbl$user == input$user, "id"] == 
-          user_tbl[user_tbl$password == input$passw, "id"],
+          user_tbl[user_tbl$password == input$pass, "id"],
         "Wrong User Name or Password"
       ),
       errorClass = "login"

@@ -25,7 +25,7 @@ navbarPage(
           ),
           
           passwordInput(
-            inputId     = "passw", 
+            inputId     = "pass", 
             label       = tagList(icon("unlock-alt"), "Password"), 
             placeholder = "Enter password"
           ),
