@@ -1,36 +1,46 @@
 function(input, output, session) {
+  reactives <- reactiveValues()
   
   # 1. Validate user and password
-  validate_password_basic <- eventReactive(input$ab_login_button_basic, {
-    validation <- FALSE
+  validate_login <- eventReactive(input$login_button, {
+    reactives$login <- FALSE
   
-    validate(need(input$ti_user_basic != "", "User Name is missing"))
-    validate(need(input$ti_password_basic != "", "Password is missing"))
-    validate(need(
-      user_tbl[user_tbl$user == input$ti_user_basic, "id"] == 
-        user_tbl[user_tbl$password == input$ti_password_basic, "id"]
-      ,
-      "Wrong User Name or Password"
-    ))
+    validate(
+      need(input$user != "", "User Name is missing"), 
+      errorClass = "login"
+    )
+    validate(
+      need(input$passw != "", "Password is missing"), 
+      errorClass = "login"
+    )
+    validate(
+      need(
+        user_tbl[user_tbl$user == input$user, "id"] == 
+          user_tbl[user_tbl$password == input$passw, "id"],
+        "Wrong User Name or Password"
+      ),
+      errorClass = "login"
+    )
     
-    validation <- TRUE
+    reactives$login <- TRUE
   })
   
   # 2 Login error message
   output$login_error <- renderText({
-    validate_password_basic()
+    req(validate_login(), cancelOutput = TRUE)
     #class(is_valid) <- append(class(is_valid), "character")
     #base::stop(safeError(is_valid))
   })
   
   # 3. Hide form (in case credentials are correct) and Update log table
-  observeEvent(validate_password_basic(), {
+  hide_login <- reactive({
+    req(reactives$login)
     shinyjs::hide(id = "login-basic")
-    UpdateLog(input$ti_user_basic)
+    UpdateLog(input$user)
   })
   
   # 4. Retrieve user session data
-  user_session <- eventReactive(validate_password_basic(), {
+  user_session <- eventReactive(validate_login(), {
     HTML(paste0(
       "<b>",
       "protocol: ", session$clientData$url_protocol, "<br>",
@@ -58,15 +68,15 @@ function(input, output, session) {
   })
   
   # 6. Display app content
-  output$display_content_basic <- renderUI({
-    req(validate_password_basic())
+  output$display_content <- renderUI({
+    hide_login()
     
     div(
-      id = "display_content_basic",
-      class = "alert alert-dismissible alert-success",
+      id = "display_content",
+      class = "card text-white bg-info mb-3",
       h4("Access confirmed!"),
       p("Welcome to TYT"),
-      h5(paste0("User ", input$ti_user_basic, " in action")),
+      h5(paste0("User ", input$user, " in action")),
       br(),
       h5("User session data"),
       user_session(),
