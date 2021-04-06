@@ -32,8 +32,8 @@ fluidPage(
       
       # Login form ----
       column(
-        width = 4, 
-        offset = 4,
+        width = 6, 
+        offset = 3,
         wellPanel(
           id = "login-basic",
           tags$h5("Please login", class = "text-center"),
@@ -65,7 +65,15 @@ fluidPage(
             .shiny-output-error-login {
               font-size: 14px;
             }
-          "))
+          ")),
+          
+          br(),
+          tags$div(tags$small("Don't have an account?"), `class` = "text-center"),
+          tags$div(
+            `class` = "text-center",
+            actionLink(inputId = "register_user", label = "Create one")
+          )
+          
         )
       ),
       # On authorization app content ----
