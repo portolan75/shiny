@@ -25,6 +25,20 @@ GetCurrentUsers <- function() {
 # Get existing userbase from db
 user_tbl <- GetCurrentUsers()
 
+# Function to add a new user in the db
+AddNewUser <- function(new_user, new_pass) {
+  conn <- dbConnect(RSQLite::SQLite(), db_path)
+  query_insert <- sprintf(
+    "INSERT INTO user (user, password) VALUES ('%s', '%s')", 
+    new_user,
+    new_pass
+  )
+  
+  # Update the database
+  dbExecute(conn, query_insert)
+  dbDisconnect(conn)
+}
+
 # Function to upload logs in log table
 UpdateLog <- function(user) {
   conn <- dbConnect(RSQLite::SQLite(), db_path)
