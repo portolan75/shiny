@@ -1,9 +1,9 @@
 function(input, output, session) {
   reactives <- reactiveValues()
+  reactives$login <- FALSE
   
   # 1. Validate user and password
   validate_login <- eventReactive(input$login_button, {
-    reactives$login <- FALSE
   
     validate(
       need(input$user != "", "User Name is missing"), 
@@ -25,7 +25,7 @@ function(input, output, session) {
     reactives$login <- TRUE
   })
   
-  # 2 Login error message
+  # 2 Output - Login error message
   output$login_error <- renderText({
     req(validate_login(), cancelOutput = TRUE)
     #class(is_valid) <- append(class(is_valid), "character")
@@ -33,14 +33,13 @@ function(input, output, session) {
   })
   
   # 3. Hide form (in case credentials are correct) and Update log table
-  hide_login <- reactive({
-    req(reactives$login)
+  observeEvent(validate_login(), {
     shinyjs::hide(id = "login-basic")
     UpdateLog(input$user)
   })
   
-  # 4. Retrieve user session data
-  user_session <- eventReactive(validate_login(), {
+  # 4. Reactive expression to retrieve user session data
+  user_session <- reactive({
     HTML(paste0(
       "<b>",
       "protocol: ", session$clientData$url_protocol, "<br>",
@@ -52,7 +51,7 @@ function(input, output, session) {
     ))
   })
   
-  # 5. Retrieve geolocation data
+  # 5. Reactive expression to retrieve geolocation data
   user_geo <- reactive({
     geo <- GeolocateUser()
     HTML(paste0(
@@ -67,22 +66,43 @@ function(input, output, session) {
     ))
   })
   
-  # 6. Display app content
+  # 6. App content on authorization ----
   output$display_content <- renderUI({
-    hide_login()
-    
+    req(reactives$login)
     div(
-      id = "display_content",
-      class = "card text-white bg-info mb-3",
-      h4("Access confirmed!"),
-      p("Welcome to TYT"),
-      h5(paste0("User ", input$user, " in action")),
-      br(),
-      h5("User session data"),
-      user_session(),
-      br(),
-      h5("User geo data"),
-      user_geo()
+      `id` = "display_content",
+      `class` = "shiny-html-output container-fluid",
+      navlistPanel(
+        tabPanel("Tags Management"),
+        tabPanel("Track Time"),
+        tabPanel("Stats",
+          tags$div(
+            `class` = "card text-white bg-success mb-3",
+            `id` = "stats_card_session",
+            tags$div(`class` = "card-header", "User session data"),
+            tags$div(
+              `class` = "card-body",
+              h5(paste0("Welcome to TYT")),
+              p("Access confirmed!"),
+              user_session()
+            )
+          ),
+          tags$div(
+            `class` = "card text-white bg-info mb-3",
+            `id` = "stats_card_geo",
+            tags$div(`class` = "card-header", "User Geo data"),
+            tags$div(
+              `class` = "card-body",
+              user_geo()
+            )
+          )
+        ),
+        id = "tabset",
+        selected =  "Stats",
+        well = TRUE
+        
+      )
+      
     )
   })
   

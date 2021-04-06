@@ -1,6 +1,6 @@
 # UI
 fluidPage(
-  # HEADER + Re-style ----
+  # HEADER + RESIZE + RE-STYLE ----
   # Resize body
   tags$style(HTML("
     body {
@@ -22,9 +22,9 @@ fluidPage(
       }
     "))
   ),
-  title = "TYT",
-  theme = bslib::bs_theme(version = 4, bootswatch = "minty"),
+  `theme` = bslib::bs_theme(version = 4, bootswatch = "minty"),
   useShinyjs(),  # Include shinyjs
+  
   # UI container ----
   fluidRow(
     column(
@@ -68,14 +68,10 @@ fluidPage(
           "))
         )
       ),
-        
-      
-      # UI Inputs ----
-      # To be filled-in
-      
-      # UI Output ----
-      # Display app content on authorization
+      # On authorization app content ----
       htmlOutput(outputId = "display_content")
+      
     )
   )
+  
 )
