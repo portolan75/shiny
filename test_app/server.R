@@ -1,6 +1,7 @@
 function(input, output, session) {
   reactives <- reactiveValues()
   reactives$login <- FALSE
+  reactives$signup <- NULL
   
   # 1. Validate user and password
   validate_login <- eventReactive(input$login_button, {
@@ -38,7 +39,14 @@ function(input, output, session) {
     UpdateLog(input$user)
   })
   
-  # 4. Reactive expression to retrieve user session data
+  # 4. Hide login form in case user want to sign-up
+  observeEvent(input$create_user, {
+    reactives$signup <- TRUE
+    shinyjs::hide(id = "login-panel")
+    shinyjs::show(id = "signup_panel")
+  })
+  
+  # 5. Reactive expression to retrieve user session data
   user_session <- reactive({
     HTML(paste0(
       "<b>",
@@ -51,7 +59,7 @@ function(input, output, session) {
     ))
   })
   
-  # 5. Reactive expression to retrieve geolocation data
+  # 6. Reactive expression to retrieve geolocation data
   user_geo <- reactive({
     geo <- GeolocateUser()
     HTML(paste0(
@@ -66,7 +74,7 @@ function(input, output, session) {
     ))
   })
   
-  # 6. App content on authorization ----
+  # 7. App content on authorization ----
   output$display_content <- renderUI({
     req(reactives$login)
     div(
