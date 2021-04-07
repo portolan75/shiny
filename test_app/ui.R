@@ -22,7 +22,7 @@ fluidPage(
       }
     "))
   ),
-  `theme` = bslib::bs_theme(version = 4, bootswatch = "minty"),
+  `theme` = bslib::bs_theme(version = 4, bootswatch = "yeti"),
   useShinyjs(),  # Include shinyjs
   
   # UI container ----
@@ -32,10 +32,10 @@ fluidPage(
       
       # Login form ----
       column(
-        width = 6, 
-        offset = 3,
+        width = 4, 
+        offset = 4,
         wellPanel(
-          id = "login-basic",
+          id = "login-panel",
           tags$h5("Please login", class = "text-center"),
           
           textInput(
@@ -67,13 +67,49 @@ fluidPage(
             }
           ")),
           
-          br(),
-          tags$div(tags$small("Don't have an account?"), `class` = "text-center"),
+          
           tags$div(
             `class` = "text-center",
-            actionLink(inputId = "register_user", label = "Create one")
+            br(), 
+            tags$small("Don't have an account?"),
+            tags$div(
+              `class` = "text-center",
+              actionLink(inputId = "register_user", label = "Create one")
+            )
           )
+        )
+      ),
+      # Register form ----
+      column(
+        width = 4, 
+        offset = 4,
+        wellPanel(
+          id = "signup_panel",
+          tags$h5("TYT - Sign-Up", class = "text-center"),
           
+          textInput(
+            inputId     = "signup_user",
+            label       = tagList(icon("user"), "User Name"),
+            placeholder = "min. 4 characters"
+          ),
+          
+          passwordInput(
+            inputId     = "signup_pass", 
+            label       = tagList(icon("unlock-alt"), "Password"), 
+            placeholder = "min. 8 characters"
+          ),
+          
+          passwordInput(
+            inputId = "signup_verify_pass", 
+            tagList(icon("unlock-alt"), "Verify Password"),
+            placeholder = "Re-type Password"
+          ),
+          
+          actionButton(
+            inputId = "signup_button", 
+            label = "Create",
+            class = "btn btn-primary"
+          )
         )
       ),
       # On authorization app content ----

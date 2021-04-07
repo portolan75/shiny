@@ -34,7 +34,7 @@ function(input, output, session) {
   
   # 3. Hide form (in case credentials are correct) and Update log table
   observeEvent(validate_login(), {
-    shinyjs::hide(id = "login-basic")
+    shinyjs::hide(id = "login-panel")
     UpdateLog(input$user)
   })
   
