@@ -8,8 +8,8 @@ Shiny is a framework for creating web applications using R code :\
 Today, Shiny is used in almost as many niches and industries as R itself is.
 
 - In Academia as a teaching tool for *statistical concepts*.
-- In Big Pharma companies to *speed collaboration between scientists and           analysts* during drug development. 
-- In *Tech companies* to set up **realtime metrics dashboards** that incorporate   advanced analytics.
+- In Big Pharma companies to *speed collaboration between scientists and analysts* during drug development. 
+- In *Tech companies* to set up **realtime metrics dashboards** that incorporate advanced analytics.
 
 Online documentation for starters/developers can be found:
 
