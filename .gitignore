@@ -2,6 +2,9 @@
 .Rhistory
 .Rapp.history
 
+# YAML configuration files
+.yml
+
 # Session Data files
 .RData
 
