@@ -1,0 +1,56 @@
+{
+    "packages": [
+        {
+            "package": "BH",
+            "version": "1.87.0-1",
+            "_comment": "Required by httpgd. Boost provides free peer-reviewed portable C++ source libraries. A large part of Boost is provided as C++ template code which is resolved entirely at compile-time without linking."
+        },
+        {
+            "package": "languageserver",
+            "version": "0.3.16",
+            "_comment": "Required by httpgd. An implementation of the Language Server Protocol for R. The Language Server protocol is used by an editor client to integrate features like auto completion."
+        },
+        {
+            "package": "httpgd",
+            "version": "2.0.2",
+            "_comment": "A graphics device for R that is accessible via network protocols. This package was created to make it easier to embed live R graphics in integrated development environments and other applications."
+        },
+        {
+            "package": "rmarkdown",
+            "version": "2.29",
+            "_comment": "Convert R Markdown documents into a variety of formats."
+        },
+        {
+            "package": "tidyverse",
+            "version": "2.0.0",
+            "_comment": "The 'tidyverse' is a set of packages that work in harmony because they share common data representations and 'API' design."
+        },
+        {
+            "package": "shiny",
+            "version": "1.10.0",
+            "_comment": "Makes it incredibly easy to build interactive web applications with R. Automatic 'reactive' binding between inputs and outputs and extensive prebuilt widgets"
+        },
+        {
+            "package": "plotly",
+            "version": "4.10.4",
+            "_comment": "Create interactive web graphics from 'ggplot2' graphs and/or a custom interface to the (MIT-licensed) JavaScript library 'plotly.js'."
+        },
+        {
+            "package": "usethis",
+            "version": "3.1.0",
+            "_comment": "Automate package and project setup tasks that are otherwise performed manually. This includes setting up unit testing, test coverage, continuous integration, Git, 'GitHub', licenses, 'Rcpp', 'RStudio' projects, and more."
+        }
+    ],
+    "package_dev": [
+        {
+            "package": "BH",
+            "version": "1.87.0-1",
+            "_comment": "Required by httpgd. Boost provides free peer-reviewed portable C++ source libraries. A large part of Boost is provided as C++ template code which is resolved entirely at compile-time without linking."
+        },
+        {
+            "package": "httpgd",
+            "version": "2.0.2",
+            "_comment": "A graphics device for R that is accessible via network protocols. This package was created to make it easier to embed live R graphics in integrated development environments and other applications."
+        }
+    ]
+}
