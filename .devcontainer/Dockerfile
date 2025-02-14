@@ -70,10 +70,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libmagick++-dev \
     make \
     tmux \
-    # python3-launchpadlib \
-    # python3.10-dev \
-    # python3.10-venv \
-    # python3-pip \
+    python3-launchpadlib \
+    python3.12-dev \
+    python3.12-venv \
+    python3-pip \
     lsof \
     && rm -rf /var/lib/apt/lists/*
 
