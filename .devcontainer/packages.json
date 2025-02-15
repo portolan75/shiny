@@ -11,6 +11,16 @@
             "_comment": "Required by httpgd. An implementation of the Language Server Protocol for R. The Language Server protocol is used by an editor client to integrate features like auto completion."
         },
         {
+            "package": "AsioHeaders",
+            "version": "1.22.1-2",
+            "_comment": "Required by httpgd. 'Asio' is a cross-platform C++ library for network and low-level I/O programming that provides developers with a consistent asynchronous model using a modern C++ approach."
+        },
+        {
+            "package": "unigd",
+            "version": "0.1.2",
+            "_comment": "Required by httpgd. A universal graphical interface."
+        },
+        {
             "package": "httpgd",
             "version": "2.0.2",
             "_comment": "A graphics device for R that is accessible via network protocols. This package was created to make it easier to embed live R graphics in integrated development environments and other applications."

@@ -43,6 +43,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxt-dev \
     libpng-dev \
     libjpeg-dev \
+    libtiff-dev \
+    libfontconfig1-dev\
     libcairo2-dev \
     libcurl4-openssl-dev \
     libssl-dev \

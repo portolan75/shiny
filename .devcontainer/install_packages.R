@@ -8,7 +8,7 @@
 # Set the working directory
 setwd("./settings/")
 # Required the remotes package
-install.packages("remotes", repos = "http://cran.rstudio.com/")
+install.packages("remotes", repos = "https://cran.rstudio.com/")
 #---- Load list of packages
 # Set the jq query
 jq_command <- 'jq -r ".packages[] |  [.package, .version] | @tsv" packages.json'
@@ -18,6 +18,7 @@ jq_command <- 'jq -r ".packages[] |  [.package, .version] | @tsv" packages.json'
 # Parse the json file with the list of package
 raw <- system(command = jq_command, intern = TRUE)
 
+# Function to create the list of desired packages and versions
 package_list <- lapply(raw, function(i){
   x <- unlist(strsplit(x = i, split = "\t"))
   data.frame(package = x[1], version = x[2], stringsAsFactors = FALSE)
@@ -35,14 +36,27 @@ for(i in 1:nrow(packages_df)){
      (packages_df$package[i] %in% rownames(installed.packages()) &&
       packageVersion(packages_df$package[i]) != packages_df$version[i])){
     cat("\033[0;92m", paste("Installing", packages_df$package[i]), "\033[0m\n", sep = "")
-
-    remotes::install_version(package = packages_df$package[i],
+      # httpgd package not available in CRAN anymore. So that this is alternative
+      if(packages_df$package[i] %in% "httpgd") {
+        remotes::install_version(package = packages_df$package[i],
                              version = packages_df$version[i],
                              dependencies = c("Depends", "Imports"),
                              upgrade = FALSE,
                              verbose = FALSE,
                              quiet = FALSE,
-                             repos = "http://cran.rstudio.com/")
+                             repos = c("https://cranhaven.r-universe.dev", "https://cloud.r-project.org")
+                            )
+      }
+      else {
+         remotes::install_version(package = packages_df$package[i],
+                             version = packages_df$version[i],
+                             dependencies = c("Depends", "Imports"),
+                             upgrade = FALSE,
+                             verbose = FALSE,
+                             quiet = FALSE,
+                             repos = "https://cran.rstudio.com/"
+                            )
+      }
   }
 
   if(!packages_df$package[i] %in% rownames(installed.packages()) ||
