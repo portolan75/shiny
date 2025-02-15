@@ -23,5 +23,5 @@ if (interactive() && Sys.getenv("TERM_PROGRAM") == "vscode") {
 # Set CRAN Mirror
 options(repos = c(CRAN = Sys.getenv("CRAN_MIRROR")))
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
-options(repos = c(CRAN = "https://cran.rstudio.com/"))
-#
+# Ensure R is using Cairo (in place of X11) as graphical editor device.
+options(bitmapType = "cairo")
