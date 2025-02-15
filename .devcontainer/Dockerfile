@@ -71,8 +71,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     make \
     tmux \
     python3-launchpadlib \
-    python3.12-dev \
-    python3.12-venv \
+    python3-dev \
+    python3-venv \
     python3-pip \
     lsof \
     && rm -rf /var/lib/apt/lists/*
@@ -100,12 +100,16 @@ RUN Rscript ./settings/install_packages.R
 
 # Step 6 - Install Quarto
 RUN bash ./settings/install_quarto.sh $QUARTO_VER
+
+# Step 7 - Copy Rprofile in root
 COPY .Rprofile /root/
 
-# Step 7 - Set Python Environmentt
+# Step 8 - Set Python Environmentt
 RUN python3 -m venv /opt/$VENV_NAME  \
     && export PATH=/opt/$VENV_NAME/bin:$PATH \
     && echo "source /opt/$VENV_NAME/bin/activate" >> ~/.bashrc
 
-# Step 8 - Install radian (to run R on the command line)
-RUN pip3 install -r ./settings/requirements.txt
+# Step 9 - Install radian (to run R on the command line)
+RUN /opt/$VENV_NAME/bin/pip install --requirement ./settings/requirements.txt
+# NOTE: Instead of using pip3 install, which tries to install packages system-wide (not allowed in Ubuntu 24.04), \
+# We directly call pip from the virtual environment (/opt/$VENV_NAME/bin/pip), ensuring packages are installed inside the environment.
