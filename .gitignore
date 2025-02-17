@@ -41,5 +41,8 @@ vignettes/*.pdf
 # R Environment Variables
 .Renviron
 
+# Vs Code Dev Containers env variables
+devcontainer.env
+
 # Shiny cheatsheet
 Shiny cheatsheet.pdf

@@ -1,0 +1,3 @@
+# Radian is an alternative R console with code completion and syntax highlight features.
+# We use radian to run R on the command line.
+radian
