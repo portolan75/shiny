@@ -20,8 +20,7 @@ if (interactive() && Sys.getenv("TERM_PROGRAM") == "vscode") {
   }
 }
 
-# Set CRAN Mirror
+# Set CRAN Mirror and Cairo graph device
 options(repos = c(CRAN = Sys.getenv("CRAN_MIRROR")))
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
-# Ensure R is using Cairo (in place of X11) as graphical editor device.
-options(bitmapType = "cairo")
+options(bitmapType = "cairo") # Ensure R is using Cairo (in place of X11) as graphical editor device.

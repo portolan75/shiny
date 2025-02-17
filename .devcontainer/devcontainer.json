@@ -1,23 +1,20 @@
 {
     "name": "R Dev Environment",
-    // "image": "r-shiny-vscode:v4.4.2", 
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": ".",
-        "args": {
-            "VENV_NAME": "SHINY_STOCK_ANALYZER",
-            "R_VERSION_MAJOR": "4",
-            "R_VERSION_MINOR": "4",
-            "R_VERSION_PATCH": "2",
-            "CRAN_MIRROR": "https://cran.rstudio.com/",
-            "QUARTO_VER": "1.6.40"
-        }
-    },
+    "image": "r-shiny-vscode:v4-4-2",
+    // "build": {
+    //     "dockerfile": "Dockerfile",
+    //     "context": ".",
+    //     "args": {
+    //         "VENV_NAME": "R_DEV_ENV",
+    //         "R_VERSION_MAJOR": "4",
+    //         "R_VERSION_MINOR": "4",
+    //         "R_VERSION_PATCH": "2",
+    //         "CRAN_MIRROR": "https://cran.rstudio.com/",
+    //         "QUARTO_VER": "1.6.40"
+    //     }
+    // },
     // Use Environment Variables
-    "remoteEnv": {
-        "VAR1":  "${localEnv:TERM_PROGRAM}", 
-        "VAR2": "${localEnv:TERM}"
-    },
+    "runArgs": ["--name", "R442-dev-env", "--rm"],
     // "runArgs": ["--env-file",".devcontainer/devcontainer.env"] alternative if instead of remoteEnv is used a devcontainer.env file  
     "customizations": {
         "vscode": {
@@ -40,9 +37,15 @@
             "settings": {
                 "files.associations": {
                     "*.Rmd": "rmd"
-                }
+                },
+                "python.defaultInterpreterPath": "/opt/R_DEV_SHINY/bin/python3",
+                "python.selectInterpreter": "/opt/R_DEV_SHINY/bin/python3",
+                "remote.autoForwardPorts": false
             }
-        } 
-    }, 
-    "postStartCommand": "radian"
- } 
+        }
+    },
+    "remoteEnv": {
+        "VAR1":  "${localEnv:TERM_PROGRAM}", 
+        "VAR2": "${localEnv:TERM}"
+    }
+} 

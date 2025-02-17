@@ -36,8 +36,8 @@ for(i in 1:nrow(packages_df)){
      (packages_df$package[i] %in% rownames(installed.packages()) &&
       packageVersion(packages_df$package[i]) != packages_df$version[i])){
     cat("\033[0;92m", paste("Installing", packages_df$package[i]), "\033[0m\n", sep = "")
-      # httpgd package not available in CRAN anymore. So that this is alternative
-      if(packages_df$package[i] %in% "httpgd") {
+      # httpgd and unigd packages not available in CRAN anymore. So that this is alternative
+      if(packages_df$package[i] %in% c("unigd", "httpgd")) {
         remotes::install_version(package = packages_df$package[i],
                              version = packages_df$version[i],
                              dependencies = c("Depends", "Imports"),

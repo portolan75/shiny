@@ -1,4 +1,14 @@
-# Setting R Development Environment with VScode
+## Check if the container run correctly:
+
+In radian terminal run:
+`gitOption("bitmapType")`
+
+then if:
+- the answer is `"cairo"` perfect!
+- otherwise *Rebuild and Reopen the container* until the option `bitmapType` is `"cairo"`.
+- Alternatively open a new zsh terminal (inside the container) and launch `radian`. It should automatically pick "cairo" as graphic device.
+
+## Setting R Development Environment with VScode
 
 So far, we reviewed the foundation of Docker. We saw how to set and build an image with the Dockerfile and the build command, respectively, and then run it in a container with the run command. This section will focus on setting up an R development environment with VScode which includes:
 

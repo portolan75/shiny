@@ -12,7 +12,8 @@ FROM ubuntu:24.04
 
 # Step 2 - Set arguments and environment variables
 # Define arguments
-ARG VENV_NAME=SHINY_STOCK_ANALYZER
+ARG PROJECT_NAME="R Shiny Dev"
+ARG VENV_NAME=R_DEV_ENV
 ARG R_VERSION_MAJOR=4
 ARG R_VERSION_MINOR=4
 ARG R_VERSION_PATCH=2
@@ -21,6 +22,7 @@ ARG CRAN_MIRROR=https://cran.rstudio.com/
 ARG QUARTO_VER="1.6.40"
 
 # Define environment variables
+ENV PROJECT_NAME=$PROJECT_NAME
 ENV VENV_NAME=$VENV_NAME
 ENV R_VERSION_MAJOR=$R_VERSION_MAJOR
 ENV R_VERSION_MINOR=$R_VERSION_MINOR
@@ -77,6 +79,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-venv \
     python3-pip \
     lsof \
+    # Necessary for tidyverse
+    freetype2-doc \
+    libharfbuzz-dev \ 
+    libfribidi-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Step 4 - Install R
@@ -115,3 +121,13 @@ RUN python3 -m venv /opt/$VENV_NAME  \
 RUN /opt/$VENV_NAME/bin/pip install --requirement ./settings/requirements.txt
 # NOTE: Instead of using pip3 install, which tries to install packages system-wide (not allowed in Ubuntu 24.04), \
 # We directly call pip from the virtual environment (/opt/$VENV_NAME/bin/pip), ensuring packages are installed inside the environment.
+
+# Step 10 - Start radian automatically
+RUN echo "radian" >> /root/.bashrc
+# Step 10 - Create a radian_profile to automatically source .Rprofile when radian is launched in a Dev Container and Python environment.
+# Set the RADIAN_PROFILE environment variable
+# ENV RADIAN_PROFILE="/root/.config/radian/radian_profile"
+# # Ensure the directory exists
+# RUN mkdir -p /root/.config/radian
+# # Create the radian_profile and source .Rprofile
+# RUN echo "source('/root/.Rprofile')" > /root/.config/radian/radian_profile
